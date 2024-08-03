@@ -1,0 +1,162 @@
+\documentclass[fontsize=10pt]{article}
+\usepackage[margin=0.70in]{geometry}
+\usepackage{lipsum,mwe,abstract}
+\usepackage[T1]{fontenc} 
+\usepackage[english]{babel} 
+
+\usepackage{fancyhdr} % Custom headers and footers
+%\pagestyle{fancyplain} % Makes all pages in the document conform to the custom headers and footers
+%\fancyhead{} 
+%\fancyfoot[C]{\thepage} % Page numbering for right footer
+\usepackage{lipsum}
+\setlength\parindent{0pt} 
+
+\usepackage{amsmath,amsfonts,amsthm} % Math packages
+\usepackage{booktabs}
+\usepackage{wrapfig}
+\usepackage{multicol}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{subcaption}
+\usepackage{comment}
+\usepackage{tcolorbox}
+\usepackage{enumitem}
+\usepackage{cuted}
+\usepackage{sectsty} % Allows customizing section commands
+\allsectionsfont{\normalfont \normalsize \scshape} % Section names in small caps and normal fonts
+
+\renewenvironment{abstract} % Change how the abstract look to remove margins
+ {\small
+  \begin{center}
+  \bfseries \abstractname\vspace{-.5em}\vspace{0pt}
+  \end{center}
+  \list{}{%
+    \setlength{\leftmargin}{0mm}
+    \setlength{\rightmargin}{\leftmargin}%
+  }
+  \item\relax}
+ {\endlist}
+ 
+\makeatletter
+\renewcommand{\maketitle}{\bgroup\setlength{\parindent}{0pt} % Change how the title looks like
+\begin{flushleft}
+  \textbf{\@title}
+  \@author \\ 
+  \@date
+\end{flushleft}\egroup
+}
+\makeatother
+
+%% ------------------------------------------------------------------- 
+
+\title{
+\Large Performance Comparison of Nano GPT Models \\ Character-Level ReLU Model vs Word-Level GeLU Model  \\
+[10pt] 
+}
+\date{\today}
+\author{Pankaja Balasooriya (SKF2400104)}
+
+\begin{document}
+
+ \maketitle
+
+% --------------- ABSTRACT
+
+% --------------- MAIN CONTENT
+
+\section{Introduction}
+\vspace{-10pt}
+This report compares two versions of Nano GPT model trained with Tiny Shakespeare dataset
+using the character-level tokenization and ReLU activation, and the word-level tokenization model 
+using GeLU activation. The changes aimed to improve the model's understanding of word-level
+context and potentially enhance its performance through the use of GeLU, which is common 
+in modern language models.
+
+\vspace{-10pt} % Adjust the value as needed
+
+\section{Methodology}
+\vspace{-10pt}
+Both models are evaluated using \textbf{Training and validation loss, Perplexity, Training time, Number of Parameters
+and generated text}.Both models were trained for 15000 iterations on the same Tiny Shakespeare dataset, using identical
+hyperparameters except for the mentioned changes. 
+Training of both models were performed on a Intel Core i7-13650HX, NVIDIA RTX 4060 6GB with 16GB of RAM and pytorch v2.3.1, Cuda v12.1. 
+\vspace{-10pt}
+\section{Results}
+\vspace{-10pt}
+\subsection{Quantitative Metrics}
+\vspace{-10pt}
+\begin                    
+  {table}[h]
+\centering
+\begin{tabular}{@{}lrr@{}}
+\toprule
+Metric & Character-Level (ReLU) & Word-Level (GeLU) \\
+\midrule
+Final Training Loss & 1.5327 & 2.5475 \\
+Final Validation Loss & 1.7193 & 9.2367 \\
+Final Validation Perplexity & 5.6016 & 11693.125 \\
+Training Time & 7.69 minutes & 8.60 minutes \\
+Model Parameters & 0.209729 M & 3.512903 M \\
+Vocabulary size & 65 & 25671 \\
+\bottomrule
+\end{tabular}
+\vspace{-10pt}
+\end{table}
+\vspace{-10pt}
+\subsection{Qualitative Assessment}
+\vspace{-10pt}
+\begin{multicols}{2}
+
+  \tcbset{colback=white, colframe=black, width=\columnwidth, boxrule=0.5pt, arc=4pt, boxsep=0pt, left=2pt, right=2pt, top=2pt, bottom=2pt}
+  
+  \begin{tcolorbox}[title=Character-Level (ReLU) generated text:]
+  \ttfamily % Use a monospaced font
+  KING RICHARD II:\\
+I am spelw you love.
+I cannot to the hope.
+I the goldesson,--
+A what erichle, and doubt, Then, in Francous
+  \end{tcolorbox}
+  
+  \columnbreak
+  
+  \begin{tcolorbox}[title=Word-Level (GeLU) generated text:]
+  \ttfamily % Use a monospaced font
+  ISABELLA: \\
+ No, sir: why, lady! 'tis as to tarry in 
+ I could all affected as all and as free as if 
+ But is it in a thing with the scene, 
+  \end{tcolorbox}
+  
+  \end{multicols}
+  \vspace{-25pt}
+\section{Discussion}
+\vspace{-10pt}
+\begin{enumerate}
+    \item \textbf{Loss and Perplexity}: The word-level model shows higher loss and perplexity values. This is expected due to the increased vocabulary size and complexity of predicting entire words rather than characters. However, it doesn't necessarily indicate poorer performance, as possible word combinations are much wider than character combinations.
+
+    \item \textbf{Training Time}: The word-level tokenized model took a little longer to train, likely due to the increased vocabulary size.
+
+    \item \textbf{Model Size}: The word-level model has more parameters, primarily due to the larger embedding layer needed for the expanded vocabulary.
+
+    \item \textbf{Generated Text Quality}: Both models generated text in a similar form to Shakespeare's plays, but the word-level model generated more natural-sounding language, even though both generated sentences with no meaning. Charater level model also generated words with incorrect spellings.
+\end{enumerate}
+\vspace{-10pt}
+\section{Conclusion}
+\vspace{-10pt}
+The transition to a word-level tokenization with GeLU activation has resulted in a more 
+complex model with higher computational requirements. While metrics like 
+loss and perplexity appear worse, this is largely due to the increased difficulty of
+the predicting at word level compaired to the character level. The qualitative assessment 
+suggests that the word-level model 
+produces higher quality, more naturally sounding text. This improvement in output 
+quality may justify the increased computational cost and complexity.
+
+Further tuning of hyperparameters for the word-level model may help improve 
+its quantitative metrics while maintaining its qualitative advantages. 
+Additionally, experimenting with different context lengths and 
+model architectures could potentially enhance performance further.
+
+
+ \end{document}
+ 
