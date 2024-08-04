@@ -67,7 +67,7 @@
 \section{Introduction}
 \vspace{-10pt}
 This report compares two versions of Nano GPT model trained with Tiny Shakespeare dataset
-using the character-level tokenization and ReLU activation, and the word-level tokenization model 
+using the character-level tokenization and ReLU activation, and the word-level tokenization 
 using GeLU activation. The changes aimed to improve the model's understanding of word-level
 context and potentially enhance its performance through the use of GeLU, which is common 
 in modern language models.
@@ -77,9 +77,9 @@ in modern language models.
 \section{Methodology}
 \vspace{-10pt}
 Both models are evaluated using \textbf{Training and validation loss, Perplexity, Training time, Number of Parameters
-and generated text}.Both models were trained for 15000 iterations on the same Tiny Shakespeare dataset, using identical
+and generated text}.Both models were trained for 5000 iterations on the same Tiny Shakespeare dataset, using identical
 hyperparameters except for the mentioned changes. 
-Training of both models were performed on a Intel Core i7-13650HX, NVIDIA RTX 4060 6GB with 16GB of RAM and pytorch v2.3.1, Cuda v12.1. 
+Training of both models were performed on a Google Colab notebook.
 \vspace{-10pt}
 \section{Results}
 \vspace{-10pt}
@@ -92,11 +92,11 @@ Training of both models were performed on a Intel Core i7-13650HX, NVIDIA RTX 40
 \toprule
 Metric & Character-Level (ReLU) & Word-Level (GeLU) \\
 \midrule
-Final Training Loss & 1.5327 & 2.5475 \\
-Final Validation Loss & 1.7193 & 9.2367 \\
-Final Validation Perplexity & 5.6016 & 11693.125 \\
-Training Time & 7.69 minutes & 8.60 minutes \\
-Model Parameters & 0.209729 M & 3.512903 M \\
+Final Training Loss & 1.3639 & 1.5005 \\
+Final Validation Loss & 1.5965 & 7.9351 \\
+Final Validation Perplexity & 4.9357 & 2793.63 \\
+Training Time & 44.3 minutes & 82.75 minutes\\
+Model Parameters & 9.901889 M & 29.592903 M \\
 Vocabulary size & 65 & 25671 \\
 \bottomrule
 \end{tabular}
@@ -111,21 +111,20 @@ Vocabulary size & 65 & 25671 \\
   
   \begin{tcolorbox}[title=Character-Level (ReLU) generated text:]
   \ttfamily % Use a monospaced font
-  KING RICHARD II:\\
-I am spelw you love.
-I cannot to the hope.
-I the goldesson,--
-A what erichle, and doubt, Then, in Francous
+  KING EDWARD IVI:\\
+Ghaod, sir, that is not thou orwh distress.
+Brack me night no my wood resolable!-Grous
+ANd, sir. I well then give might ewn you.
   \end{tcolorbox}
   
   \columnbreak
   
   \begin{tcolorbox}[title=Word-Level (GeLU) generated text:]
   \ttfamily % Use a monospaced font
-  ISABELLA: \\
- No, sir: why, lady! 'tis as to tarry in 
- I could all affected as all and as free as if 
- But is it in a thing with the scene, 
+  ROMEO: \\
+  Hence, villain! villain, all I shall come all the though, 
+  Give scandal unto thee, peace: 
+  In levies, answering or wrong your exclamations.  
   \end{tcolorbox}
   
   \end{multicols}
@@ -135,7 +134,7 @@ A what erichle, and doubt, Then, in Francous
 \begin{enumerate}
     \item \textbf{Loss and Perplexity}: The word-level model shows higher loss and perplexity values. This is expected due to the increased vocabulary size and complexity of predicting entire words rather than characters. However, it doesn't necessarily indicate poorer performance, as possible word combinations are much wider than character combinations.
 
-    \item \textbf{Training Time}: The word-level tokenized model took a little longer to train, likely due to the increased vocabulary size.
+    \item \textbf{Training Time}: The word-level tokenized model took longer to train, likely due to the increased vocabulary size.
 
     \item \textbf{Model Size}: The word-level model has more parameters, primarily due to the larger embedding layer needed for the expanded vocabulary.
 
